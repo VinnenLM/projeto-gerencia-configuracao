@@ -6,6 +6,7 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\Episodio;
 use App\Models\Serie;
 use App\Models\Temporada;
+use App\Models\User;
 use App\Services\CriadorDeSerie;
 use App\Services\RemovedorDeSerie;
 use Illuminate\Http\Request;
@@ -16,14 +17,14 @@ class SeriesController extends Controller
     public function listarSeries(Request $request)
     {
 
-        $series = Serie::all()->where('users_id', Auth::id());
+        $series = Serie::all()->where('user_id', Auth::id())->sortDesc();
         $mensagem = $request->session()->get('mensagem');
         return view('series/listarSeries', compact('series', 'mensagem'));
     }
 
     public function criarSeries()
     {
-        return view('series/create');
+        return view('series/criarSerie');
     }
 
     public function salvarSeries(SeriesFormRequest $request, CriadorDeSerie $criadorDeSerie)
@@ -45,6 +46,15 @@ class SeriesController extends Controller
         $novoNome = $request->nome;
         $serie = Serie::find($id);
         $serie->nome = $novoNome;
+        $request->session()->flash('mensagem', "Série $novoNome modificada com sucesso!");
         $serie->save();
+    }
+
+    public function listarUsuarios(Request $request)
+    {
+        $users = User::all();
+        $series = Serie::all()->where('user_id', Auth::id())->sortDesc();
+        $mensagem = $request->session()->get('mensagem');
+        return view('home/home', compact('users', 'series', 'mensagem'));
     }
 }

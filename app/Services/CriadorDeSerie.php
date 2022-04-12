@@ -14,7 +14,7 @@ class CriadorDeSerie
     {
         //DB::transaction(function () use ($nomeSerie, $qtdTemporadas, $qtdEpisodios, &$serie){
         DB::beginTransaction();
-        $serie = Serie::create(['nome' => $nomeSerie, 'users_id' => Auth::id()]);
+        $serie = Serie::create(['nome' => $nomeSerie, 'user_id' => Auth::id()]);
         $this->criarTemporada($qtdTemporadas, $qtdEpisodios, $serie);
         DB::commit();
         //});
@@ -25,7 +25,7 @@ class CriadorDeSerie
     public function criarTemporada(int $qtdTemporadas, int $qtdEpisodios, Serie $serie)
     {
         for($i=1;$i<=$qtdTemporadas;$i++){
-            $temporada = $serie->temporadas()->create(['numero' => $i]);
+            $temporada = $serie->temporadas()->create(['nome' => 'Temporada '.$i]);
             $this->criarEpisodio($qtdEpisodios, $temporada);
         }
     }

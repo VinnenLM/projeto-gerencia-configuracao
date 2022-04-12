@@ -27,10 +27,18 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/entrar', [LoginController::class, 'entrar']);
+Route::post('/entrar', [LoginController::class, 'logar']);
+
 Route::get('/sair', function () {
     \Illuminate\Support\Facades\Auth::logout();
     return redirect('/entrar');
 });
+
+Route::get('/registrar', [RegistroController::class, 'registrar']);
+Route::post('/registrar', [RegistroController::class, 'criarRegistro']);
+
+Route::get('/home', [SeriesController::class, 'listarUsuarios']);
 
 Route::get('/series', [SeriesController::class, 'listarSeries'])->middleware(['auth']);
 Route::get('/series/adicionar', [SeriesController::class, 'criarSeries'])->middleware(['auth']);
@@ -38,19 +46,9 @@ Route::post('/series/adicionar', [SeriesController::class, 'salvarSeries'])->mid
 Route::post('/series/{id}/editarSerie', [SeriesController::class, 'editarSerie'])->middleware(['auth']);
 Route::delete('/series/{id}', [SeriesController::class, 'excluirSeries'])->middleware(['auth']);
 
-Route::get('/series/{serie_id}/temporadas', [TemporadasController::class, 'listarTemporadas'])->middleware(['auth']);
+Route::get('/series/{serie_id}/temporadas', [TemporadasController::class, 'listarTemporadas']);
 
-Route::get('/temporadas/{temporada}/episodios', [EpisodiosController::class, 'listarEpisodios'])->middleware(['auth']);
+Route::get('/temporadas/{temporada}/episodios', [EpisodiosController::class, 'listarEpisodios']);
 Route::post('/temporadas/{temporada}/episodios/assistidos', [EpisodiosController::class, 'assistidos'])->middleware(['auth']);
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-Route::get('/entrar', [LoginController::class, 'entrar']);
-Route::post('/entrar', [LoginController::class, 'logar']);
-
-Route::get('/registrar', [RegistroController::class, 'registrar']);
-Route::post('/registrar', [RegistroController::class, 'criarRegistro']);
 
 require __DIR__ . '/auth.php';
