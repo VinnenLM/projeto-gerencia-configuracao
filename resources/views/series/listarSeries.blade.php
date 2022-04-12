@@ -41,7 +41,7 @@
                     @csrf
 
                     <div class="botoes">
-                        <button class="btn btn-success mr-1" onclick="mostrarInput({{$serie->id}})"><i
+                        <button class="btn btn-primary mr-1" onclick="mostrarInput({{$serie->id}})"><i
                                 class="bi bi-pencil-square"></i></button>
                         <form action="/series/{{$serie->id}}" method="post">
 
